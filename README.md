@@ -24,4 +24,6 @@ python3 scripts/cohere_align.py \
    --cuda
  ```
 
-where `m` is model name, `s` is source text path, `t` is target text path, `o` is output directory path. For more parameters, see the script.
+where `m` is model name, `s` is source text path, `t` is target text path, `o` is output directory path. For more parameters, see the [alignment script](https://github.com/abumafrim/Cohere-Align/blob/main/scripts/cohere_align.py).
+
+You can also use the jupyter notebook above to align sentences.
