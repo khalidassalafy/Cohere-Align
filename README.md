@@ -1,3 +1,7 @@
+<a target="_blank" href="https://colab.research.google.com/github/abumafrim/Cohere-Align/blob/main/Cohere_Align_Sentences.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
 # Cohere-Align
  
 This repo takes two text files in the source and target languages, and returns sentences that are most likely translations of each other.
@@ -26,4 +30,4 @@ python3 scripts/cohere_align.py \
 
 where `m` is model name, `s` is source text path, `t` is target text path, `o` is output directory path, and provide the `cuda` option if you have GPU. For more parameters, see the [alignment script](https://github.com/abumafrim/Cohere-Align/blob/main/scripts/cohere_align.py).
 
-You can also use the jupyter notebook above to align sentences.
+You can also use the [jupyter notebook](https://github.com/abumafrim/Cohere-Align/blob/main/Cohere_Align_Sentences.ipynb) above to align the sentences.
