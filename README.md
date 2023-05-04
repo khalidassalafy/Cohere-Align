@@ -16,9 +16,9 @@ To align sentences, create two text files, with each line containing a distinct 
 python3 scripts/cohere_align.py \
    --cohere_api_key '<api_key>' \
    -m 'embed-multilingual-v2.0' \
-   -s ../src.txt \
-   -t ../trg.txt \
-   -o ../cohere \
+   -s src.txt \
+   -t trg.txt \
+   -o cohere \
    --retrieval 'nn' \
    --dot \
    --cuda
