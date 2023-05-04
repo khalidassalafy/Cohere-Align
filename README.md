@@ -1,3 +1,7 @@
+<a target="_blank" href="https://colab.research.google.com/github/abumafrim/Cohere-Align/blob/main/Cohere_Align_Sentences.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
 # Cohere-Align
  
 This repo takes two text files in the source and target languages, and returns sentences that are most likely translations of each other.
