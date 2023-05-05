@@ -23,7 +23,7 @@ import pandas as pd
 import sys
 import os
 
-import cohere
+from laserembeddings import Laser
 
 
 BATCH_SIZE = 500
@@ -59,10 +59,10 @@ def topk_mean(m, k, inplace=False):  # TODO Assuming that axis is 1
 def main():
   # Parse command line arguments
   parser = argparse.ArgumentParser(description='Select candidate translations giving sentences in two languages')
-  parser.add_argument('-k', '--cohere_api_key', required=True, type=str, help='your personal cohere api key')
   parser.add_argument('-s', '--src_sentences', default=sys.stdin.fileno(), help='the file containing source sentences.')
   parser.add_argument('-t', '--trg_sentences', default=sys.stdin.fileno(), help='the file containing target sentences.')
-  parser.add_argument('-m', '--model', required=True, type=str, help='cohere multilingual model name.')
+  parser.add_argument('--src_lang', required=True, type=str, help='source language code.')
+  parser.add_argument('--trg_lang', required=True, type=str, help='target language code.')
   parser.add_argument('-o', '--output', default='', help='path to save the translations.')
   parser.add_argument('--retrieval', default='nn', choices=['nn', 'invnn', 'invsoftmax', 'csls'], help='the retrieval method (nn: standard nearest neighbor; invnn: inverted nearest neighbor; invsoftmax: inverted softmax; csls: cross-domain similarity local scaling)')
   parser.add_argument('--inv_temperature', default=1, type=float, help='the inverse temperature (only compatible with inverted softmax)')
@@ -87,17 +87,14 @@ def main():
     os.makedirs(args.output)
     print('creating output directory: done')
 
-  # Initialise cohere embedding
-  api_key = args.cohere_api_key
-  co = cohere.Client(f"{api_key}")
+  laser = Laser()
 
   # Get source embeddings
   with open(args.src_sentences, 'r') as f:  
     src_sents = f.readlines()
     src_sents = [line.strip() for line in src_sents]
 
-  response = co.embed(texts=src_sents, model=args.model)  
-  x = response.embeddings
+  x = laser.embed_sentences(src_sents, lang=args.src_lang)
   x = convert_to_np(x)
 
   # Get target embeddings
@@ -105,8 +102,7 @@ def main():
     trg_sents = f.readlines()
     trg_sents = [line.strip() for line in trg_sents]
   
-  response = co.embed(texts=trg_sents, model=args.model)  
-  z = response.embeddings
+  z = laser.embed_sentences(trg_sents, lang=args.trg_lang)
   z = convert_to_np(z)
 
   # NumPy/CuPy management
@@ -204,7 +200,7 @@ def main():
 
   df = pd.DataFrame({'source sentences': trans_src, 'translations': trans_trg})
   #print(df)
-  df.to_csv(os.path.join(args.output, 'cohere_translations.csv'), index=False)
+  df.to_csv(os.path.join(args.output, 'laser_translations.csv'), index=False)
 
 if __name__ == '__main__':
   main()
