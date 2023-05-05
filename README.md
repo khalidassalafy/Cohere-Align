@@ -16,6 +16,7 @@ pip install cohere
 
 To align sentences, create two text files, with each line containing a distinct text, for the source and target languages. Afterwards , run the following command.
 
+### Cohere
 ```
 python3 scripts/cohere_align.py \
    --cohere_api_key '<api_key>' \
@@ -27,6 +28,19 @@ python3 scripts/cohere_align.py \
    --dot \
    --cuda
  ```
+ 
+### Laser
+```
+python3 scripts/laser_align.py \
+  -s src.txt \
+  -t trg.txt \
+  -o cohere \
+  --src_lang ha \
+  --trg_lang en \
+  --retrieval 'nn' \
+  --dot \
+  --cuda
+```
 
 where `m` is model name, `s` is source text path, `t` is target text path, `o` is output directory path, and provide the `cuda` option if you have GPU. For more parameters, see the [alignment script](https://github.com/abumafrim/Cohere-Align/blob/main/scripts/cohere_align.py).
 
