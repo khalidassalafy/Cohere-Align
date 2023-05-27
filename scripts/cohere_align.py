@@ -22,6 +22,9 @@ import numpy as np
 import pandas as pd
 import sys
 import os
+import time
+import itertools
+import json
 
 import cohere
 
@@ -29,6 +32,7 @@ import cohere
 BATCH_SIZE = 500
 
 def convert_to_np(lst, dtype='float'):
+  
   count = len(lst)
   dim = len(lst[0])
 
@@ -39,6 +43,7 @@ def convert_to_np(lst, dtype='float'):
   return matrix
 
 def topk_mean(m, k, inplace=False):  # TODO Assuming that axis is 1
+  
   xp = get_array_module(m)
   n = m.shape[0]
   ans = xp.zeros(n, dtype=m.dtype)
@@ -56,6 +61,11 @@ def topk_mean(m, k, inplace=False):  # TODO Assuming that axis is 1
   return ans / k
 
 
+def divide_chunks(l, n):
+  for i in range(0, len(l), n):
+    yield l[i:i + n]
+
+
 def main():
   # Parse command line arguments
   parser = argparse.ArgumentParser(description='Select candidate translations giving sentences in two languages')
@@ -63,6 +73,7 @@ def main():
   parser.add_argument('-s', '--src_sentences', default=sys.stdin.fileno(), help='the file containing source sentences.')
   parser.add_argument('-t', '--trg_sentences', default=sys.stdin.fileno(), help='the file containing target sentences.')
   parser.add_argument('-m', '--model', required=True, type=str, help='cohere multilingual model name.')
+  parser.add_argument('-b', '--batch_size', default=2000, help='batch size.')
   parser.add_argument('-o', '--output', default='', help='path to save the translations.')
   parser.add_argument('--retrieval', default='nn', choices=['nn', 'invnn', 'invsoftmax', 'csls'], help='the retrieval method (nn: standard nearest neighbor; invnn: inverted nearest neighbor; invsoftmax: inverted softmax; csls: cross-domain similarity local scaling)')
   parser.add_argument('--inv_temperature', default=1, type=float, help='the inverse temperature (only compatible with inverted softmax)')
@@ -91,22 +102,77 @@ def main():
   api_key = args.cohere_api_key
   co = cohere.Client(f"{api_key}")
 
-  # Get source embeddings
-  with open(args.src_sentences, 'r') as f:  
-    src_sents = f.readlines()
-    src_sents = [line.strip() for line in src_sents]
+  src_embed_file = os.path.join(args.output, 'embeddings', 'src_embed.txt')
+  trg_embed_file = os.path.join(args.output, 'embeddings', 'trg_embed.txt')
 
-  response = co.embed(texts=src_sents, model=args.model)  
-  x = response.embeddings
+  if not (os.path.isfile(src_embed_file) and os.path.isfile(trg_embed_file)):
+    # Get source sentences
+    with open(args.src_sentences, 'r') as f:  
+      src_sents = f.readlines()
+      src_sents = [line.strip() for line in src_sents]
+
+    # Get target sentences
+    with open(args.trg_sentences, 'r') as f:  
+      trg_sents = f.readlines()
+      trg_sents = [line.strip() for line in trg_sents]
+
+    n = int(args.batch_size)
+    all_src_sents = list(divide_chunks(src_sents, n))
+    all_trg_sents = list(divide_chunks(trg_sents, n))
+
+    x = []
+    z = []
+
+    print('Due to Cohere free API limitations, embeddings of batches will be generated after 61 seconds of each other.')
+
+    x_sent_embed = []
+    z_sent_embed = []
+
+    for n, combination in enumerate(itertools.zip_longest(all_src_sents, all_trg_sents)):
+      if combination[0]:
+        response = co.embed(texts=combination[0], model=args.model)
+        r_x = response.embeddings 
+        x += r_x
+        x_sent_embed.extend([str(s) + '\t' + str(e) for s, e in zip(combination[0], r_x)])
+
+      if combination[1]:
+        response = co.embed(texts=combination[1], model=args.model)
+        r_y = response.embeddings 
+        z += r_y
+        z_sent_embed.extend([str(s) + '\t' + str(e) for s, e in zip(combination[1], r_y)])
+
+      print('batch ' + str(n + 1) + ' of ' + str(len(combination)) + ' done - ' + str(len(combination[0])) + ' source and ' + str(len(combination[1])) + ' target embeddings generated successfully.')
+
+      time.sleep(61)
+
+    # create path to save embeddings
+    embed_out = os.path.join(args.output, 'embeddings')
+    if not os.path.isdir(embed_out):
+      os.makedirs(embed_out)
+
+    # save embeddings
+    with open(os.path.join(embed_out, 'src_embed.txt'), 'w') as f:
+      x_sent_embed = [s + '\n' for s in x_sent_embed]
+      f.writelines(x_sent_embed)
+
+    with open(os.path.join(embed_out, 'trg_embed.txt'), 'w') as f:
+      z_sent_embed = [s + '\n' for s in z_sent_embed]
+      f.writelines(z_sent_embed)
+
+  else:
+    print('reading sentences and embeddings from file')
+    with open(src_embed_file, 'r') as f:
+      x_sent_embed = f.readlines()
+      src_sents = [s.strip().split('\t')[0] for s in x_sent_embed]
+      x = [json.loads(s.strip().split('\t')[1]) for s in x_sent_embed]
+
+    with open(trg_embed_file, 'r') as f:
+      z_sent_embed = f.readlines()
+      trg_sents = [s.strip().split('\t')[0] for s in z_sent_embed]
+      z = [json.loads(s.strip().split('\t')[1]) for s in z_sent_embed]
+
+  # convert embeddings to numpy matrices
   x = convert_to_np(x)
-
-  # Get target embeddings
-  with open(args.trg_sentences, 'r') as f:  
-    trg_sents = f.readlines()
-    trg_sents = [line.strip() for line in trg_sents]
-  
-  response = co.embed(texts=trg_sents, model=args.model)  
-  z = response.embeddings
   z = convert_to_np(z)
 
   # NumPy/CuPy management
