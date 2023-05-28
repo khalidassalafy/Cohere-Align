@@ -14,7 +14,7 @@
     - [Download pre-trained LASER models](#download-pre-trained-laser-models)
     - [LASER Align Sentences](#laser-align-sentences)
 - [Options](#options)
-    - [Citation](#citation)
+- [Citation](#citation)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -97,7 +97,7 @@ You can also use the [jupyter notebook](https://github.com/abumafrim/Cohere-Alig
 | `'--precision'` | the floating-point precision (defaults to fp32) |
 | `'--cuda'` | use cuda (requires cupy) |
 
-### Citation
+# Citation
 If you use this code in your work, please cite our paper:
 
 ```
