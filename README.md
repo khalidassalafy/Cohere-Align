@@ -4,7 +4,6 @@
 
 # Table of Contents
 <!-- vscode-markdown-toc -->
-- [Table of Contents](#table-of-contents)
 - [Cohere-Align](#cohere-align)
     - [Create account on CoHere](#create-account-on-cohere)
     - [Install CoHere module](#install-cohere-module)
