@@ -37,12 +37,12 @@ To align sentences, create two text files, with each line containing a distinct 
 
 ```
 python3 scripts/cohere_align.py \
-   --cohere_api_key '<api_key>'` \
-   -m 'embed-multilingual-v2.0'` \
-   -s src.txt \
-   -t trg.txt \
+   --cohere_api_key `'<api_key>'` \
+   -m 'embed-multilingual-v2.0' \
+   -s example/src.txt \
+   -t example/trg.txt \
    -o cohere \
-   --retrieval 'nn'` \
+   --retrieval 'nn' \
    --dot \
    --cuda
  ```
@@ -62,12 +62,12 @@ python -m laserembeddings download-models
 ### <a name='Align-L'></a>LASER Align Sentences
 ```
 python3 scripts/laser_align.py \
-  -s src.txt \
-  -t trg.txt \
-  -o cohere \
+  -s example/src.txt \
+  -t example/trg.txt \
+  -o laser \
   --src_lang ha \
   --trg_lang en \
-  --retrieval 'nn'` \
+  --retrieval 'nn' \
   --dot \
   --cuda
 ```
