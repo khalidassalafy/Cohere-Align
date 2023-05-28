@@ -6,13 +6,13 @@
 <!-- vscode-markdown-toc -->
 - [Table of Contents](#table-of-contents)
 - [Cohere-Align](#cohere-align)
-  - [Create account on CoHere](#create-account-on-cohere)
-  - [Install CoHere module](#install-cohere-module)
-  - [CoHere Align Sentences](#cohere-align-sentences)
+    - [Create account on CoHere](#create-account-on-cohere)
+    - [Install CoHere module](#install-cohere-module)
+    - [CoHere Align Sentences](#cohere-align-sentences)
 - [Evaluation](#evaluation)
-  - [Install laserembeddings module](#install-laserembeddings-module)
-  - [Download pre-trained LASER models](#download-pre-trained-laser-models)
-  - [LASER Align Sentences](#laser-align-sentences)
+    - [Install laserembeddings module](#install-laserembeddings-module)
+    - [Download pre-trained LASER models](#download-pre-trained-laser-models)
+    - [LASER Align Sentences](#laser-align-sentences)
 - [Options](#options)
 
 <!-- vscode-markdown-toc-config
@@ -24,15 +24,15 @@
 # <a name='Cohere'></a>Cohere-Align 
 This repo takes two text files in the source and target languages, and returns sentences that are most likely translations of each other.
 
-## <a name='Acct'></a>Create account on CoHere
+### <a name='Acct'></a>Create account on CoHere
 Before running the aligner, create an account on [cohere](https://cohere.com) to get your api key.
 
-## <a name='Install-C'></a>Install CoHere module
+### <a name='Install-C'></a>Install CoHere module
 ```
 pip install cohere
 ```
 
-## <a name='Align-C'></a>CoHere Align Sentences
+### <a name='Align-C'></a>CoHere Align Sentences
 To align sentences, create two text files, with each line containing a distinct text, for the source and target languages. Afterwards , run the following command.
 
 ```
@@ -50,16 +50,16 @@ python3 scripts/cohere_align.py \
 # <a name='Eval'></a>Evaluation
 We implemented a code for aligning the sentences using [LASER](https://github.com/facebookresearch/LASER) for evaluation. Afterwards, we compute F1 on the two aligned sentences to determine the better aligner.
 
-## <a name='Install-L'></a>Install laserembeddings module
+### <a name='Install-L'></a>Install laserembeddings module
 
 ```
 pip install laserembeddings
 ```
-## <a name='Download-Laser'></a>Download pre-trained LASER models
+### <a name='Download-Laser'></a>Download pre-trained LASER models
 ```
 python -m laserembeddings download-models
 ```
-## <a name='Align-L'></a>LASER Align Sentences
+### <a name='Align-L'></a>LASER Align Sentences
 ```
 python3 scripts/laser_align.py \
   -s src.txt \
