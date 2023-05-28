@@ -31,7 +31,7 @@ python3 scripts/cohere_align.py \
 
 Options
 
-| option | description |
+| <div style="width:190px">option</div> | description |
 | ----------------- | ----------- |
 | '-k', '--cohere_api_key' | your personal cohere api key |
 | '-s', '--src_sentences' | the file containing source sentences. |
