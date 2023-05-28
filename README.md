@@ -32,6 +32,7 @@ python3 scripts/cohere_align.py \
 Options
 
 | option | description |
+| ------ | ----------- |
 | '-k', '--cohere_api_key' | your personal cohere api key |
 | '-s', '--src_sentences' | the file containing source sentences. |
 | '-t', '--trg_sentences' | the file containing target sentences. |
