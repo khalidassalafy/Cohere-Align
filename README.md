@@ -28,6 +28,26 @@ python3 scripts/cohere_align.py \
    --dot \
    --cuda
  ```
+
+Options
+
+| option | description |
+| '-k', '--cohere_api_key' | your personal cohere api key |
+| '-s', '--src_sentences' | the file containing source sentences. |
+| '-t', '--trg_sentences' | the file containing target sentences. |
+| '-o', '--output' | path to save the translations. |
+| '-m', '--model' | cohere multilingual model name. |
+| '-b', '--batch_size' | batch size. CoHere free API requires this. default=3000 (for source and target sentences each. |
+| '--retry_time' | number of seconds to wait before retrying. default=61 (seconds). |
+| '--retrieval' | the retrieval method (nn: standard nearest neighbor (default); invnn: inverted nearest neighbor; invsoftmax: inverted softmax; csls: cross-domain similarity local scaling) |
+| '--inv_temperature' | the inverse temperature (only compatible with inverted softmax). default = 1. |
+| '--inv_sample' | use a random subset of the source vocabulary for the inverse computations (only compatible with inverted softmax). default=None |
+| '-n', '--neighborhood' | the neighborhood size (only compatible with csls). default=10 |
+| '--dot' | use the dot product in the similarity computations instead of the cosine |
+| '--encoding' | the character encoding for input/output (defaults to utf-8) |
+| '--seed' | the random seed. default=0 |
+| '--precision' | the floating-point precision (defaults to fp32) |
+| '--cuda' | use cuda (requires cupy) |
  
 ### Laser
 ```
