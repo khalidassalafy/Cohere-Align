@@ -31,17 +31,6 @@ import cohere
 
 BATCH_SIZE = 500
 
-def convert_to_np(lst, dtype='float'):
-  
-  count = len(lst)
-  dim = len(lst[0])
-
-  matrix = np.empty((count, dim), dtype=dtype)
-  for i in range(count):
-    matrix[i] = np.asarray(lst[i], dtype=dtype)
-
-  return matrix
-
 def topk_mean(m, k, inplace=False):  # TODO Assuming that axis is 1
   
   xp = get_array_module(m)
@@ -181,8 +170,8 @@ def main():
       print('ERROR: Install CuPy for CUDA support', file=sys.stderr)
       sys.exit(-1)
     xp = get_cupy()
-    src_embeddings = xp.asarray(x)
-    trg_embeddings = xp.asarray(z)
+    x = xp.asarray(x)
+    z = xp.asarray(z)
   else:
     print('cuda not provided, using cpu.')
     xp = np
