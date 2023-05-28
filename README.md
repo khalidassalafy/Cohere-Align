@@ -4,6 +4,7 @@
 
 # Table of Contents
 <!-- vscode-markdown-toc -->
+- [Table of Contents](#table-of-contents)
 - [Cohere-Align](#cohere-align)
     - [Create account on CoHere](#create-account-on-cohere)
     - [Install CoHere module](#install-cohere-module)
@@ -13,6 +14,7 @@
     - [Download pre-trained LASER models](#download-pre-trained-laser-models)
     - [LASER Align Sentences](#laser-align-sentences)
 - [Options](#options)
+    - [Citation](#citation)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -94,3 +96,20 @@ You can also use the [jupyter notebook](https://github.com/abumafrim/Cohere-Alig
 | `'--seed'` | the random seed. default=0 |
 | `'--precision'` | the floating-point precision (defaults to fp32) |
 | `'--cuda'` | use cuda (requires cupy) |
+
+### Citation
+If you use this code in your work, please cite our paper:
+
+```
+@misc{
+  author = {
+    Abdulmumin, Idris and
+    Muhammad, Shamsuddeen Hassan and
+    Ahmad, Ibrahim Sa'id and
+    Khalid, Auwal Abubakar
+  }
+  title = {
+    Leveraging Closed-Access Multilingual Embedding for Parallel Sentence Alignment in Low Resource Languages
+  }
+}
+```
