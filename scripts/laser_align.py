@@ -62,16 +62,14 @@ def main():
 
   # Get source embeddings
   with open(args.src_sentences, 'r') as f:  
-    src_sents = f.readlines()
-    src_sents = [line.strip() for line in src_sents]
+    src_sents = f.read().splitlines()
 
   x = laser.embed_sentences(src_sents, lang=args.src_lang)
   x = convert_to_np(x)
 
   # Get target embeddings
   with open(args.trg_sentences, 'r') as f:  
-    trg_sents = f.readlines()
-    trg_sents = [line.strip() for line in trg_sents]
+    trg_sents = f.read().splitlines()
   
   z = laser.embed_sentences(trg_sents, lang=args.trg_lang)
   z = convert_to_np(z)
@@ -97,15 +95,15 @@ def main():
     print('normarlize embeddings: done')
 
   # Build sent to index map
-  src_sent2ind = {sent: i for i, sent in enumerate(src_sents)}
+  src_sent2ind = {i: sent for i, sent in enumerate(src_sents)}
   print('build source sent to index map: done')
   print('length of source embedding', len(src_sent2ind))
   
-  trg_sent2ind = {sent: i for i, sent in enumerate(trg_sents)}
+  trg_sent2ind = {i: sent for i, sent in enumerate(trg_sents)}
   print('build target word to index map: done')
   print('length of target embedding', len(trg_sent2ind))
 
-  src = [ind for ind in src_sent2ind.values()]
+  src = [ind for ind in src_sent2ind.keys()]
 
   # Find translations
   translation = collections.defaultdict(int)
@@ -170,7 +168,7 @@ def main():
   trans_trg = [trg_sents[t] for t in translation.values()]
 
   df = pd.DataFrame({'source sentences': trans_src, 'translations': trans_trg})
-  #print(df)
+  print(len(df), 'translations generated')
   df.to_csv(os.path.join(args.output, 'laser_translations.csv'), index=False)
 
 if __name__ == '__main__':

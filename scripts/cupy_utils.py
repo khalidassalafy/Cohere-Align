@@ -37,3 +37,15 @@ def asnumpy(x):
         return cupy.asnumpy(x)
     else:
         return numpy.asarray(x)
+
+def convert_to_np(lst, dtype='float'):
+
+    count = len(lst)
+    dim = len(lst[0])
+
+    matrix = numpy.empty((count, dim), dtype=dtype)
+    #print(matrix)
+    for i in range(count):
+        matrix[i] = numpy.asarray(lst[i], dtype=dtype)
+
+    return matrix

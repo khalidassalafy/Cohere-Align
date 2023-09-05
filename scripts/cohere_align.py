@@ -25,8 +25,10 @@ import os
 import time
 import itertools
 import json
+from tqdm import tqdm
 
 import cohere
+from torch import combinations
 
 
 BATCH_SIZE = 500
@@ -73,6 +75,7 @@ def main():
   parser.add_argument('--seed', type=int, default=0, help='the random seed')
   parser.add_argument('--precision', choices=['fp16', 'fp32', 'fp64'], default='fp32', help='the floating-point precision (defaults to fp32)')
   parser.add_argument('--cuda', action='store_true', help='use cuda (requires cupy)')
+  parser.add_argument('--sleep', type=int, default=61, help='the sleep duration')
   args = parser.parse_args()
 
   # Choose the right dtype for the desired precision
@@ -112,11 +115,14 @@ def main():
     x = []
     z = []
 
+    batches = max(len(all_src_sents), len(all_trg_sents))
+
     print('Due to Cohere free API limitations, embeddings of batches will be generated after 61 seconds of each other.')
 
     x_sent_embed = []
     z_sent_embed = []
 
+    
     for n, combination in enumerate(itertools.zip_longest(all_src_sents, all_trg_sents)):
       if combination[0]:
         response = co.embed(texts=combination[0], model=args.model)
@@ -130,9 +136,15 @@ def main():
         z += r_y
         z_sent_embed.extend([str(s) + '\t' + str(e) for s, e in zip(combination[1], r_y)])
 
-      print('batch ' + str(n + 1) + ' of ' + str(len(combination)) + ' done - ' + str(len(combination[0])) + ' source and ' + str(len(combination[1])) + ' target embeddings generated successfully.')
+      len_src = len(combination[0]) if combination[0] else ''
+      len_tgt = len(combination[1]) if combination[1] else ''
+      print('batch ' + str(n + 1) + ' of ' + str(batches) + ' done - ' + str(len_src) + ' source and ' + str(len_tgt) + ' target embeddings generated successfully.\n')
 
-      time.sleep(61)
+      if n + 1 < batches:
+        with tqdm(total=args.sleep, desc="Sleeping") as pbar:
+          for i in range(args.sleep):
+            time.sleep(1)
+            pbar.update(1)
 
     # create path to save embeddings
     embed_out = os.path.join(args.output, 'embeddings')
@@ -154,15 +166,19 @@ def main():
       x_sent_embed = f.readlines()
       src_sents = [s.strip().split('\t')[0] for s in x_sent_embed]
       x = [json.loads(s.strip().split('\t')[1]) for s in x_sent_embed]
+      #print(x[0])
 
     with open(trg_embed_file, 'r') as f:
       z_sent_embed = f.readlines()
       trg_sents = [s.strip().split('\t')[0] for s in z_sent_embed]
       z = [json.loads(s.strip().split('\t')[1]) for s in z_sent_embed]
+      #print(z[0])
 
   # convert embeddings to numpy matrices
   x = convert_to_np(x)
   z = convert_to_np(z)
+
+  #print(x[0])
 
   # NumPy/CuPy management
   if args.cuda:
@@ -185,15 +201,15 @@ def main():
     print('normarlize embeddings: done')
 
   # Build sent to index map
-  src_sent2ind = {sent: i for i, sent in enumerate(src_sents)}
+  src_sent2ind = {i: sent for i, sent in enumerate(src_sents)}
   print('build source sent to index map: done')
   print('length of source embedding', len(src_sent2ind))
   
-  trg_sent2ind = {sent: i for i, sent in enumerate(trg_sents)}
+  trg_sent2ind = {i: sent for i, sent in enumerate(trg_sents)}
   print('build target word to index map: done')
   print('length of target embedding', len(trg_sent2ind))
 
-  src = [ind for ind in src_sent2ind.values()]
+  src = [ind for ind in src_sent2ind.keys()]
 
   # Find translations
   translation = collections.defaultdict(int)
@@ -258,7 +274,7 @@ def main():
   trans_trg = [trg_sents[t] for t in translation.values()]
 
   df = pd.DataFrame({'source sentences': trans_src, 'translations': trans_trg})
-  #print(df)
+  print(len(df), 'translations generated')
   df.to_csv(os.path.join(args.output, 'cohere_translations.csv'), index=False)
 
 if __name__ == '__main__':

@@ -79,15 +79,6 @@ def normalize(matrix, actions):
         elif action == 'centeremb':
             mean_center_embeddingwise(matrix)
 
-def convert_to_np(lst, dtype='float'):
-
-    count = len(lst)
-    dim = len(lst[0])
-
-    matrix = np.empty((count, dim), dtype=dtype)
-    for i in range(count):
-        matrix[i] = np.asarray(lst[i], dtype=dtype)
-
     return matrix
 
 def topk_mean(m, k, inplace=False):  # TODO Assuming that axis is 1
