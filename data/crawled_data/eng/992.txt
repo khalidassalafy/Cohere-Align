@@ -1,0 +1,23 @@
+NCC recommends two-factor authentication to secure WhatsApp
+The security feature gives businesses and people the ability to monitor and help safeguard their most vulnerable information and networks, an official said
+The Nigerian Communications Commission‘s Computer Security Incident Response Team (NCC-CSIRT) has recommended that users of the popular messaging app, WhatsApp, set up two-factor authentication (2FA) to avoid falling victim to account takeover by hackers.
+NCC-CSIRT in an advisory on Tuesday noted that WhatsApp, which is a Meta-owned service, is increasingly becoming a prime target for hackers and scammers who are always looking for ways to gain unauthorised access to users’ accounts.
+Reuben Muoka, the director of public affairs at NCC, in a statement on Tuesday, said the CSIRT described 2FA as an identity and access management security method that requires two forms of identification to access resources and data.
+According to the advisory, Mr Muoka said in the world of messaging apps, one of the most popular and recognisable is WhatsApp.
+“WhatsApp is 100 per cent free to use, has a great mobile app, and supports audio and video calls. Whether you rely on WhatsApp for all your messaging needs or just use it from time to time, it is recommended to set it up with two-factor authentication (2FA),” he said.
+“With this enabled, you will need to enter a custom PIN every time you log in to WhatsApp from a new device, adding an extra layer of security to your account.
+“2FA gives businesses or people the ability to monitor and help safeguard their most vulnerable information and networks. The 2FA is important because it prevents cybercriminals from stealing, destroying, or accessing your internal data records for their own use.”
+He noted that WhatsApp provides two-factor authentication so one can further secure the account using a PIN.
+“It is an optional feature that adds more security to your WhatsApp account, so it is recommended that everyone installs 2FA,” he added.
+Mr Muoka noted that the CSIRT highlights ten steps for enabling 2FA on WhatsApp.
+He listed the step to include include: “Open WhatsApp, Tap Settings, Tap Account, Tap Two-Step Verification, Tap Enable, Enter the Six-Digit PIN you wish to use, Tap Next, then enter it a second time to confirm it, Tap Next, Add an email address for extra security (this step is optional but it is an extra way to retrieve your account if you forget your Pin) and then Tap Next.
+“For those concerned that their PIN might have been compromised or is easy to guess, they can change their WhatsApp PIN or email address by tapping settings.
+“Two-step verification, tapping change PIN or change email address, entering a new PIN or email address, and then tapping ‘next’ to effect the necessary changes,” he said.
+CSIRT is the telecom sector’s cyber security incidence centre set up by the NCC to focus on incidents in the telecom sector and as they may affect telecom consumers and citizens at large.
+Support PREMIUM TIMES' journalism of integrity and credibility
+
+Good journalism costs a lot of money. Yet only good journalism can ensure the possibility of a good society, an accountable democracy, and a transparent government.
+For continued free access to the best investigative journalism in the country we ask you to consider making a modest support to this noble endeavour.
+By contributing to PREMIUM TIMES, you are helping to sustain a journalism of relevance and ensuring it remains free and available to all.
+TEXT AD: Call Willie - +2348098788999
+

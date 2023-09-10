@@ -275,7 +275,7 @@ def main():
 
   df = pd.DataFrame({'source sentences': trans_src, 'translations': trans_trg})
   print(len(df), 'translations generated')
-  df.to_csv(os.path.join(args.output, 'cohere_translations.csv'), index=False)
+  df.to_csv(os.path.join(args.output, 'translations.csv'), index=False)
 
 if __name__ == '__main__':
   main()
